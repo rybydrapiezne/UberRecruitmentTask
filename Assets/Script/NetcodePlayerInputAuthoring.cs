@@ -3,6 +3,7 @@ using Unity.NetCode;
 using UnityEngine;
 using Unity.Mathematics;
 
+//Authoring component for setting up the player input
 public class NetcodePlayerInputAuthoring : MonoBehaviour
 {
     public class Baker : Baker<NetcodePlayerInputAuthoring>
@@ -17,5 +18,6 @@ public class NetcodePlayerInputAuthoring : MonoBehaviour
 
 public struct NetcodePlayerInput : IInputComponentData
 {
+    //Storing the direction of player input
     public float2 InputVector;
 }

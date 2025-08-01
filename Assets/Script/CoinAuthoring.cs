@@ -1,8 +1,7 @@
 using Unity.Entities;
-using Unity.NetCode;
-using Unity.Transforms;
 using UnityEngine;
 
+//Monobehaviour class servig as authoring component for creating coin entities
 public class CoinAuthoring : MonoBehaviour
 {
     public GameObject coinPrefab;
@@ -15,8 +14,8 @@ public class CoinAuthoring : MonoBehaviour
         }
     }
 }
-
+//Tag for identifying Coin entities without storing data
 public struct Coin : IComponentData
 {
-    
+
 }

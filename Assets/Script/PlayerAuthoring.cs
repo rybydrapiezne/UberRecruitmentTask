@@ -1,7 +1,7 @@
 using Unity.Entities;
-using Unity.NetCode;
 using UnityEngine;
-using Unity.Transforms;
+
+//Authoring component used to create player prefabs
 public class PlayerAuthoring : MonoBehaviour
 {
     public float Speed;
@@ -14,18 +14,18 @@ public class PlayerAuthoring : MonoBehaviour
             AddComponent(entity, new Player());
             PresentationGO presentation = new PresentationGO();
             presentation.PlayerPrefab = authoring.playerPrefab;
-            AddComponentObject(entity,presentation);
+            AddComponentObject(entity, presentation);
             if (authoring.Speed > 0)
             {
                 Speed speed = default;
                 speed.value = authoring.Speed;
                 speed.actualValue = 0;
-                AddComponent(speed);
+                AddComponent(entity, speed);
             }
         }
     }
 }
-
+//Component used for animations we need actuall game object to correspond to entity position because of the hybrid approach
 public class PresentationGO : IComponentData
 {
     public GameObject PlayerPrefab;
@@ -42,7 +42,7 @@ public class AnimatorGO : IComponentData
 }
 public struct Player : IComponentData
 {
-    
+
 }
 
 

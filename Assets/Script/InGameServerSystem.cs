@@ -12,39 +12,48 @@ partial struct InGameServerSystem : ISystem
         state.RequireForUpdate<EntitiesReferences>();
         state.RequireForUpdate<NetworkId>();
     }
-    //[BurstCompile]
+
     public void OnUpdate(ref SystemState state)
     {
-        
+
         EntitiesReferences entitiesReferences = SystemAPI.GetSingleton<EntitiesReferences>();
         EntityCommandBuffer entityCommandBuffer = new EntityCommandBuffer(Unity.Collections.Allocator.Temp);
-        
-        var coinQuery=state.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<Coin>());
+
+        var coinQuery = state.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<Coin>());
         var playerQuery = state.EntityManager.CreateEntityQuery(ComponentType.ReadOnly<Player>());
-        
+        //calculating number of players for proper player prefab assignment 
         int playerCount = playerQuery.CalculateEntityCount();
         int coinCount = coinQuery.CalculateEntityCount();
-        
+
         foreach ((RefRO<ReceiveRpcCommandRequest> receiveRpcCommandRequest, Entity entity) in SystemAPI
                      .Query<RefRO<ReceiveRpcCommandRequest>>().WithAll<InGameRequestRpc>().WithEntityAccess())
         {
+            //Adding NetworkStreamInGame to clients to mark them as in game
             entityCommandBuffer.AddComponent<NetworkStreamInGame>(receiveRpcCommandRequest.ValueRO.SourceConnection);
             Debug.Log("Client connected to Server");
+
+            //Correct prefab assignment based on number of players
             Entity playerPrefab = playerCount == 0 ? entitiesReferences.Player1PrefabEntity : entitiesReferences.Player2PrefabEntity;
             Entity playerEntity = entityCommandBuffer.Instantiate(playerPrefab);
+
+            //Randomized spawn position of a player
             entityCommandBuffer.SetComponent(playerEntity, LocalTransform.FromPosition(new float3(
-                UnityEngine.Random.Range(-5,+5),0,0
+                UnityEngine.Random.Range(-5, +5), 0, 0
                 )));
             NetworkId networkId = SystemAPI.GetComponent<NetworkId>(receiveRpcCommandRequest.ValueRO.SourceConnection);
-            entityCommandBuffer.AddComponent(playerEntity,new GhostOwner
+            //Assigning ownership of the player entity
+            entityCommandBuffer.AddComponent(playerEntity, new GhostOwner
             {
                 NetworkId = networkId.Value,
             });
-            
-            entityCommandBuffer.AppendToBuffer(receiveRpcCommandRequest.ValueRO.SourceConnection,new LinkedEntityGroup
+
+            //Linking player entity to client's connection entity
+            entityCommandBuffer.AppendToBuffer(receiveRpcCommandRequest.ValueRO.SourceConnection, new LinkedEntityGroup
             {
                 Value = playerEntity,
             });
+
+            //Spawning the first coin
             if (playerCount == 0 && coinCount == 0)
             {
                 Entity coinEntity = entityCommandBuffer.Instantiate(entitiesReferences.CoinPrefabEntity);
@@ -56,9 +65,11 @@ partial struct InGameServerSystem : ISystem
                     Scale = prefabTransform.Scale
                 });
             }
+            //Destroying the RPC entity after execution
             entityCommandBuffer.DestroyEntity(entity);
 
         }
+        //Applying all commands to EntityManager
         entityCommandBuffer.Playback(state.EntityManager);
     }
 

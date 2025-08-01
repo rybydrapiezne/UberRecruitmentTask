@@ -1,6 +1,7 @@
 using Unity.Entities;
 using UnityEngine;
 
+//Authoring component that holds references to prefabs that are going to be spawned
 public class EntitiesReferencesAuthoring : MonoBehaviour
 {
     public GameObject player1Prefab;
@@ -11,6 +12,7 @@ public class EntitiesReferencesAuthoring : MonoBehaviour
         public override void Bake(EntitiesReferencesAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
+            //Assigning entity prefab references to fields of the entity
             AddComponent(entity, new EntitiesReferences
             {
                 Player1PrefabEntity = GetEntity(authoring.player1Prefab, TransformUsageFlags.Dynamic),
@@ -20,7 +22,7 @@ public class EntitiesReferencesAuthoring : MonoBehaviour
         }
     }
 }
-
+//Used for storing references to prefab entities
 public struct EntitiesReferences : IComponentData
 {
     public Entity Player1PrefabEntity;

@@ -6,5 +6,5 @@ using Unity.NetCode;
 public struct Speed : IComponentData
 {
     [GhostField] public float value;
-    [GhostField] public float actualValue; 
+    [GhostField] public float actualValue;
 }
