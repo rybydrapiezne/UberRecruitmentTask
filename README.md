@@ -30,10 +30,10 @@ Ze względu na ograniczenia czasowe nie zostały zaimplementowane dodatkowe mech
 Przede wszystkim nie udało się zaimplementować innych mechanik. W głównej mierze nacisk kładziony był na główne mechaniki przewidziane w zadaniu a dopiero w drugiej kolejności mechaniki dodatkowe. W idealnie przygotowanym systemie zbierania monet, zapisywany byłby stan zebranych monet dla każdego z graczy, jednakże ograniczenia czasowe nie pozwoliły na dalszy rozwój aczkolwiek tak jak wcześniej zostało wspomniane system przygotowany jest tak, że dalszy rozwój tej mechaniki byłby łatwy.
 
 ## Uwagi
-- Użyto placeholderowych assetów do demonstracji funkcjonalności.
-Linki do assetów:
-Model gracza: https://assetstore.unity.com/packages/3d/characters/humanoids/lowpoly-survival-character-rio-273074
-Model gracza: https://assetstore.unity.com/packages/3d/characters/humanoids/humans/human-character-dummy-178395
+- Użyto placeholderowych assetów do demonstracji funkcjonalności.</br>
+Linki do assetów:</br>
+Model gracza: https://assetstore.unity.com/packages/3d/characters/humanoids/lowpoly-survival-character-rio-273074</br>
+Model gracza: https://assetstore.unity.com/packages/3d/characters/humanoids/humans/human-character-dummy-178395</br>
 Model monety: https://iamsujitcu.itch.io/3d-coin
 
 
